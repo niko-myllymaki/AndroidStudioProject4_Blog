@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Assignment_4_blog</string>
+    <string name="username">Username</string>
+    <string name="tw_comment">Comment</string>
+    <string name="hint_username">Username Here</string>
+    <string name="hint_comment">Comment Here</string>
+    <string name="button_submit">Submit</string>
+    <string name="tw_comment_field">Comment Field</string>
+</resources>
