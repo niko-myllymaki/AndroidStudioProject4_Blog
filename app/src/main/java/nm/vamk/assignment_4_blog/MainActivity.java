@@ -10,11 +10,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
     EditText usernameEditText;
     EditText commentEditText;
     TextView textFieldTextView;
+
+    TextView textFieldTextViewTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 usernameEditText.setBackgroundColor(Color.rgb(255,0,0));
             } else {
                 username = String.valueOf(usernameEditText.getText());
+                usernameEditText.setText("");
 
             }
 
@@ -46,20 +53,34 @@ public class MainActivity extends AppCompatActivity {
                 commentEditText.setBackgroundColor(Color.rgb(255,0,0));
             } else {
                 comment = String.valueOf(commentEditText.getText());
+                commentEditText.setText("");
             }
 
             if(username.isEmpty() || comment.isEmpty()) {
                 textFieldTextView.setText("");
             } else {
-                textFieldTextView.setText(username + " " + comment);
-                usernameEditText.setBackgroundColor(getResources().getColor(R.color.white));
-                commentEditText.setBackgroundColor(getResources().getColor(R.color.white));
+                textFieldTextView.setText(getCurrentDateTime() + " " + username + " - " + comment);
+                textFieldTextViewTemp = textFieldTextView;
+                usernameEditText.setBackgroundColor(0);
+                commentEditText.setBackgroundColor(0);
             }
+            textFieldTextViewTemp = textFieldTextView;
+            textFieldTextView.setText(textFieldTextViewTemp.getText());
+
+            String tempValue = (String) textFieldTextView.getText();
+            Log.d("check", tempValue);
+
 
 
 
         }
     };
+
+    public String getCurrentDateTime() {
+        DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        return dateformat.format(date);
+    }
 
 
 }
