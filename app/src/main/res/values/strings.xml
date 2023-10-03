@@ -6,4 +6,10 @@
     <string name="hint_comment">Comment Here</string>
     <string name="button_submit">Submit</string>
     <string name="tw_comment_field">Comment Field</string>
+    <string name="tw_searchText">Text To Search</string>
+    <string name="tw_searchDate">Date to Search</string>
+    <string name="button_search">Search</string>
+    <string name="tw_searchResult">Result:</string>
+    <string name="hint_textToSearch">Input text</string>
+    <string name="hint_dateToSearch">e.g. 07/11/2022</string>
 </resources>
