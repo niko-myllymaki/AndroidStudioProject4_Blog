@@ -26,6 +26,14 @@ public class MainActivity extends AppCompatActivity {
     TextView searchResult;
     ArrayList<String> commentData;
     StringBuilder stringBuilder;
+    Button submitButton;
+    Button searchButton;
+
+    String commentDataToSave;
+
+    String username;
+    String comment;
+    int entryNumber = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,22 +47,17 @@ public class MainActivity extends AppCompatActivity {
         stringBuilder = new StringBuilder();
 
 
-        Button submitButton = findViewById(R.id.button_submit);
-        submitButton.setOnClickListener(submitButtonClickListener);
+        submitButton = findViewById(R.id.button_submit);
+        submitButton.setOnClickListener(ButtonClickListener);
 
-        Button searchButton = findViewById(R.id.button_search);
-        searchButton.setOnClickListener(searchButtonButtonClickListener);
+        searchButton = findViewById(R.id.button_search);
+        searchButton.setOnClickListener(ButtonClickListener);
     }
 
-    private View.OnClickListener submitButtonClickListener = new View.OnClickListener() {
-        String username = "";
-        String comment = "";
-        int entryNumber = 1;
-
-        String commentDataToSave;
-
+    private View.OnClickListener ButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            /*
             if(usernameEditText.getText().length() == 0 ) {
                 usernameEditText.setBackgroundColor(Color.rgb(255,0,0));
             } else {
@@ -68,7 +71,75 @@ public class MainActivity extends AppCompatActivity {
                 comment = String.valueOf(commentEditText.getText());
                 commentEditText.setText("");
             }
+             */
 
+            Button clickedButton = (Button)v;
+
+            //Submit button event
+            if(clickedButton.equals(submitButton)) {
+                username = "";
+                comment = "";
+
+                checkUserInputs();
+                if(!username.isEmpty() && !comment.isEmpty()) {
+                    saveCommentData();
+                    usernameEditText.setBackgroundColor(0);
+                    commentEditText.setBackgroundColor(0);
+                    for(int i = commentData.size() - 1; i >=0; i--) {
+                        stringBuilder.append(commentData.get(i)).append("\n");
+                    }
+
+                    textFieldTextView.setText(stringBuilder.toString());
+                    stringBuilder.setLength(0);
+                }
+
+            }
+
+            //Search button event
+            if(clickedButton.equals(searchButton)) {
+                textToSearchEditText = findViewById(R.id.editText_textToSearch);
+                dateToSearchEditText = findViewById(R.id.editText_dateToSearch);
+
+                String searchText = textToSearchEditText.getText().toString();
+                String searchDate = dateToSearchEditText.getText().toString();
+                StringBuilder searchResults = new StringBuilder();
+                searchResult = findViewById(R.id.tw_searchResult);
+                searchResult.setText("");
+
+                if(!searchText.isEmpty()) {
+                    for(String comment : commentData) {
+                        if(comment.toLowerCase().contains(searchText.toLowerCase())) {
+                            searchResults.append(comment).append("\n");
+                        }
+                    }
+                } else {
+                    Log.d("result", "No can do...");
+                }
+
+                if(!searchDate.isEmpty()) {
+                    for(String comment : commentData) {
+                        if(comment.toLowerCase().contains(searchDate)) {
+                            searchResults.append(comment).append("\n");
+                        }
+                    }
+                } else {
+                    Log.d("result", "No can do...");
+                }
+                usernameEditText.setBackgroundColor(0);
+                commentEditText.setBackgroundColor(0);
+                if (searchResults.length() > 0) {
+                    searchResult.setText(searchResults.toString());
+                } else {
+                    searchResult.setText("No matching results found.");
+                }
+            }
+
+
+
+
+
+
+            /*
             if(username.isEmpty() || comment.isEmpty()) {
                 textFieldTextView.setText("");
             } else {
@@ -81,51 +152,51 @@ public class MainActivity extends AppCompatActivity {
 
                 for(int i = commentData.size() - 1; i >=0; i--) {
                     stringBuilder.append(commentData.get(i)).append("\n");
-                    Log.d("Comments", commentData.get(i));
                 }
 
                 textFieldTextView.setText(stringBuilder.toString());
                 stringBuilder.setLength(0);
-
-                 /*
-                textFieldTextViewTemp = textFieldTextView;
-                textFieldTextView.setText(entryNumber++ +". "+ getCurrentDateTime() + " " + username + " - " + comment + "\n"
-                        + textFieldTextViewTemp.getText().toString());
-
-                if(commentData.size() <= 1) {
-                    Log.d("Comments", commentData.get(0));
-                } else {
-
-                }
-
-                  */
-
+                //username = "";
+                //comment = "";
 
             }
-            //newComment = textFieldTextView;
-            //currentComment = textFieldTextView;
-            //textFieldTextView.setText(currentComment.getText() + " | " +newComment.getText());
 
-            /*
-            textFieldData = textFieldTextView.getText().toString();
-            userEntries.add(textFieldData);
-            */
-
-            //Log.d("check", userEntries.get(0) + userEntries.get(1));
-
-            /*
-            textFieldTextViewTemp = textFieldTextView;
-            textFieldTextView.setText(textFieldTextViewTemp.getText());
-
-            String tempValue = (String) textFieldTextView.getText();
-            Log.d("check", tempValue);
-            */
-
-
+             */
 
         }
     };
 
+    public void checkUserInputs() {
+        if(usernameEditText.getText().length() != 0) {
+            username = usernameEditText.getText().toString();
+            usernameEditText.setText("");
+        } else {
+            usernameEditText.setBackgroundColor(Color.rgb(255,0,0));
+        }
+
+        if(commentEditText.getText().length() != 0) {
+            comment = commentEditText.getText().toString();
+            commentEditText.setText("");
+        } else {
+            commentEditText.setBackgroundColor(Color.rgb(255,0,0));
+        }
+    }
+
+    public void saveCommentData() {
+        String entryNumberString = String.valueOf(entryNumber ++);
+        commentDataToSave = getCurrentDateTime() + " " + username + " - " + comment;
+        commentData.add(entryNumberString + " " + commentDataToSave);
+    }
+
+
+
+    public String getCurrentDateTime() {
+        DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        return dateformat.format(date);
+    }
+
+    /*
     private View.OnClickListener searchButtonButtonClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             textToSearchEditText = findViewById(R.id.editText_textToSearch);
@@ -137,11 +208,26 @@ public class MainActivity extends AppCompatActivity {
             searchResult = findViewById(R.id.tw_searchResult);
             searchResult.setText("");
 
-            //Need to fix the searching by date!
-            for(String comment : commentData) {
-                if(comment.toLowerCase().contains(searchText.toLowerCase()) || comment.toLowerCase().contains(searchDate)) {
-                    searchResults.append(comment).append("\n");
+            if(!searchText.isEmpty()) {
+                //Need to fix the searching by date!
+                for(String comment : commentData) {
+                    if(comment.toLowerCase().contains(searchText.toLowerCase())) {
+                        searchResults.append(comment).append("\n");
+                    }
                 }
+            } else {
+                Log.d("result", "No can do...");
+            }
+
+            if(!searchDate.isEmpty()) {
+                //Need to fix the searching by date!
+                for(String comment : commentData) {
+                    if(comment.toLowerCase().contains(searchDate)) {
+                        searchResults.append(comment).append("\n");
+                    }
+                }
+            } else {
+                Log.d("result", "No can do...");
             }
 
             if (searchResults.length() > 0) {
@@ -149,24 +235,11 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 searchResult.setText("No matching results found.");
             }
-
-
-            /*
-            if(commentData.contains(textToSearchEditText.getText().toString())) {
-                searchResult.setText(commentData.get());
-            } else {
-                Log.d("button", "Nothing...");
-            }
-             */
-            //searchResult.setText(textToSearchEditText.getText());
         }
     };
 
-    public String getCurrentDateTime() {
-        DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date = new Date();
-        return dateformat.format(date);
-    }
+     */
+
 
 
 }
