@@ -6,11 +6,11 @@
     <string name="hint_comment">Comment Here</string>
     <string name="button_submit">Submit</string>
     <string name="tw_comment_field">Comment Field</string>
-    <string name="tw_search_instructions">Search Entries By Text Or Date</string>
+    <string name="tw_search_instructions">Search Entries By Comment Or Date</string>
     <string name="tw_input_instructions">Input Username And Comment</string>
     <string name="button_search">Search</string>
     <string name="tw_searchResult">Result:</string>
     <string name="hint_textToSearch">Input text</string>
     <string name="hint_dateToSearch">e.g. 07/11/2022</string>
-    <string name="negative_result">No matching results found.</string>
+    <string name="negative_result">No Matching Results Found...</string>
 </resources>

@@ -46,7 +46,7 @@ public class Entry {
     }
 
     public String toString() {
-        return entryNumber + " " + dateTime + " " + username + " " + comment;
+        return entryNumber + ". " + dateTime + " " + username + " - " + comment;
     }
 
 
